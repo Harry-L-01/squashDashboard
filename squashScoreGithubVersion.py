@@ -1,4 +1,4 @@
-from tkinter import *
+from tkinter import Tk, Label, Button, Grid, StringVar, N, S, E, W, OptionMenu
 import time
 import csv
 import datetime
@@ -8,11 +8,11 @@ import datetime
 currentDate = datetime.datetime.now().strftime('%A')
 
 Players = [
-'#',
-'#',
-'#',
-'#',
-'#'
+'Player1',
+'Player2',
+'Player3',
+'Player4',
+'Player5'
 ]
 
 master = Tk()
