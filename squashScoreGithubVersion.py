@@ -1,4 +1,5 @@
 from tkinter import Tk, Label, Button, Grid, StringVar, N, S, E, W, OptionMenu
+from config import * # imports all configuration options from config.py
 import time
 import csv
 import datetime
@@ -7,26 +8,19 @@ import datetime
 
 currentDate = datetime.datetime.now().strftime('%A')
 
-Players = [
-'Player1',
-'Player2',
-'Player3',
-'Player4',
-'Player5'
-]
-
 master = Tk()
 
-gameData = []
-matchData = []
+gameData = list()
+matchData = list()
 
-currentGame = 1
+currentGame = 1 
 currentMatch = 1
-playerOneScore = 0
-playerTwoScore = 0
 
-Grid.columnconfigure(master, 0, weight=1)
-Grid.columnconfigure(master, 1, weight=1)
+playerOneScore = int()
+playerTwoScore = int()
+
+Grid.columnconfigure(master, 0, weight=1) # configure column 0 of tk interface
+Grid.columnconfigure(master, 1, weight=1) # configure column 1 of tk interface
 
 playerOneVariable = StringVar(master)
 playerOneVariable.set('Please Select')
@@ -35,17 +29,12 @@ playerTwoVariable = StringVar(master)
 playerTwoVariable.set('Please Select')
 
 # Function Declarations
-def confirm():
-    if playerOneVariable.get() != 'Please Select':
-        print ("value is:" + playerOneVariable.get())
-    else:
-        print('Please select a value')
 
-def updatePlayerOneButton():
+def updatePlayerOneButton(): # Function to update the text on playerOneButton to reflect the chosen player
     playerOneButton.configure(text = f'Point to {playerOneVariable.get()}')
     playerOneButton.after(100, updatePlayerOneButton)
 
-def updatePlayerTwoButton():
+def updatePlayerTwoButton(): # Function to update the text on playerTwoButton to reflect the chosen player
     playerTwoButton.configure(text = f'Point to {playerTwoVariable.get()}')
     playerTwoButton.after(100, updatePlayerTwoButton)
 
@@ -58,9 +47,9 @@ def updatePlayerOneScore():
     elif playerOneVariable.get() == playerTwoVariable.get():
         print('please select two different players')
     else:
-        if playerOneScore >= 11 and not (abs(playerOneScore - playerTwoScore) < 2):
+        if playerOneScore >= maxScore and (abs(playerOneScore - playerTwoScore) >= scoreDifference):
             print('Player One Wins')
-        elif playerTwoScore >= 11 and not (abs(playerOneScore - playerTwoScore) < 2):
+        elif playerTwoScore >= maxScore and (abs(playerOneScore - playerTwoScore) >= scoreDifference):
             print('Player Two has won')
         else:
             playerOneScore += 1
@@ -80,9 +69,9 @@ def updatePlayerTwoScore():
     elif playerOneVariable.get() == playerTwoVariable.get():
         print('please select two different players')
     else:
-        if playerTwoScore >= 11 and not (abs(playerOneScore - playerTwoScore) < 2):
+        if playerTwoScore >= maxScore and (abs(playerOneScore - playerTwoScore) >= scoreDifference):
             print('Player Two Wins')
-        elif playerOneScore >= 11 and not (abs(playerOneScore - playerTwoScore) < 2):
+        elif playerOneScore >= maxScore and (abs(playerOneScore - playerTwoScore) >= scoreDifference):
             print('Player One has won')
         else:
             playerTwoScore += 1
@@ -106,6 +95,7 @@ def restartGame():
 
     playerOneScore = 0
     playerTwoScore = 0
+
     currentGame += 1
 
     for row in gameData:
@@ -143,6 +133,7 @@ def exitClient():
     exit()
 
 # Main program start
+
 Label(master, text = 'Overall Score: ', justify = 'center', font = (None, 15)).grid(row = 0, column = 0, columnspan = 2, sticky=N+S+E+W)
 scoreLabel = Label(master, font = (None, 30))
 scoreLabel.grid(row = 1, column = 0, columnspan = 2, sticky=N+S+E+W)
@@ -167,8 +158,7 @@ Button(master, text = 'Exit', command = exitClient).grid(row = 6, column = 0, co
 Button(master, text = 'New Game', command = restartGame).grid(row = 5, column = 0, sticky=E+W, pady = (0, 10)) # New Game button
 Button(master, text = 'Save Match', command = restartMatch).grid(row = 5, column = 1, sticky=E+W, pady = (0, 10)) # New Game button
 
-
 master.title('Squash Score Client')
-master.geometry('500x300')
+master.geometry('500x300') # Set the width and height of the client
 
-master.mainloop()
+master.mainloop() # Launch the client
